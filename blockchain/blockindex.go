@@ -10,10 +10,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/database"
-	"github.com/btcsuite/btcd/wire"
+	"github.com/particl/partsuite_partd/chaincfg"
+	"github.com/particl/partsuite_partd/chaincfg/chainhash"
+	"github.com/particl/partsuite_partd/database"
+	"github.com/particl/partsuite_partd/wire"
 )
 
 // blockNode represents a block within the block chain and is primarily used to

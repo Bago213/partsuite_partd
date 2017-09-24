@@ -10,11 +10,11 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/database"
-	_ "github.com/btcsuite/btcd/database/ffldb"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
+	"github.com/particl/partsuite_partd/chaincfg"
+	"github.com/particl/partsuite_partd/database"
+	_ "github.com/particl/partsuite_partd/database/ffldb"
+	"github.com/particl/partsuite_partd/wire"
+	partutil "github.com/particl/partsuite_partutil"
 )
 
 // This example demonstrates creating a new database.
@@ -136,7 +136,7 @@ func Example_blockStorageAndRetrieval() {
 	// and example.
 	err = db.Update(func(tx database.Tx) error {
 		genesisBlock := chaincfg.MainNetParams.GenesisBlock
-		return tx.StoreBlock(btcutil.NewBlock(genesisBlock))
+		return tx.StoreBlock(partutil.NewBlock(genesisBlock))
 	})
 	if err != nil {
 		fmt.Println(err)

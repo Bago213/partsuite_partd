@@ -9,7 +9,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
+	"github.com/particl/partsuite_partd/chaincfg/chainhash"
 	"github.com/davecgh/go-spew/spew"
 )
 

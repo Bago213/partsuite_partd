@@ -12,10 +12,10 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/database"
-	"github.com/btcsuite/btcd/database/ffldb"
-	"github.com/btcsuite/btcutil"
+	"github.com/particl/partsuite_partd/chaincfg"
+	"github.com/particl/partsuite_partd/database"
+	"github.com/particl/partsuite_partd/database/ffldb"
+	partutil "github.com/particl/partsuite_partutil"
 )
 
 // dbType is the database type name for this driver.
@@ -171,7 +171,7 @@ func TestPersistence(t *testing.T) {
 		"b1key2": "foo2",
 		"b1key3": "foo3",
 	}
-	genesisBlock := btcutil.NewBlock(chaincfg.MainNetParams.GenesisBlock)
+	genesisBlock := partutil.NewBlock(chaincfg.MainNetParams.GenesisBlock)
 	genesisHash := chaincfg.MainNetParams.GenesisHash
 	err = db.Update(func(tx database.Tx) error {
 		metadataBucket := tx.Metadata()

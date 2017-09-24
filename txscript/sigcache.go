@@ -7,8 +7,8 @@ package txscript
 import (
 	"sync"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
+	"github.com/particl/partsuite_partd/btcec"
+	"github.com/particl/partsuite_partd/chaincfg/chainhash"
 )
 
 // sigCacheEntry represents an entry in the SigCache. Entries within the

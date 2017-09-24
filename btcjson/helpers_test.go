@@ -8,7 +8,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/btcsuite/btcd/btcjson"
+	"github.com/particl/partsuite_partd/btcjson"
 )
 
 // TestHelpers tests the various helper functions which create pointers to

@@ -11,8 +11,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/wire"
+	"github.com/particl/partsuite_partd/chaincfg/chainhash"
+	"github.com/particl/partsuite_partd/wire"
 )
 
 // These variables are the chain proof-of-work limit parameters for each default
@@ -225,7 +225,7 @@ type Params struct {
 var MainNetParams = Params{
 	Name:        "mainnet",
 	Net:         wire.MainNet,
-	DefaultPort: "8333",
+	DefaultPort: "51738",
 	DNSSeeds: []DNSSeed{
 		{"seed.bitcoin.sipa.be", true},
 		{"dnsseed.bluematt.me", true},
@@ -306,19 +306,19 @@ var MainNetParams = Params{
 	Bech32HRPSegwit: "bc", // always bc for main net
 
 	// Address encoding magics
-	PubKeyHashAddrID:        0x00, // starts with 1
-	ScriptHashAddrID:        0x05, // starts with 3
-	PrivateKeyID:            0x80, // starts with 5 (uncompressed) or K (compressed)
+	PubKeyHashAddrID:        0x38, // starts with P
+	ScriptHashAddrID:        0x3c,
+	PrivateKeyID:            0x6c, 
 	WitnessPubKeyHashAddrID: 0x06, // starts with p2
 	WitnessScriptHashAddrID: 0x0A, // starts with 7Xh
 
 	// BIP32 hierarchical deterministic extended key magics
-	HDPrivateKeyID: [4]byte{0x04, 0x88, 0xad, 0xe4}, // starts with xprv
-	HDPublicKeyID:  [4]byte{0x04, 0x88, 0xb2, 0x1e}, // starts with xpub
+	HDPrivateKeyID: [4]byte{0x8f, 0x1d, 0xae, 0xb8}, // starts with XPAR
+	HDPublicKeyID:  [4]byte{0x69, 0x6e, 0x82, 0xd1}, // starts with PPAR
 
 	// BIP44 coin type used in the hierarchical deterministic path for
 	// address generation.
-	HDCoinType: 0,
+	HDCoinType: 0x2C,
 }
 
 // RegressionNetParams defines the network parameters for the regression test
@@ -401,7 +401,7 @@ var RegressionNetParams = Params{
 var TestNet3Params = Params{
 	Name:        "testnet3",
 	Net:         wire.TestNet3,
-	DefaultPort: "18333",
+	DefaultPort: "51938",
 	DNSSeeds: []DNSSeed{
 		{"testnet-seed.bitcoin.jonasschnelli.ch", true},
 		{"testnet-seed.bitcoin.schildbach.de", false},
@@ -473,15 +473,15 @@ var TestNet3Params = Params{
 	Bech32HRPSegwit: "tb", // always tb for test net
 
 	// Address encoding magics
-	PubKeyHashAddrID:        0x6f, // starts with m or n
-	ScriptHashAddrID:        0xc4, // starts with 2
+	PubKeyHashAddrID:        0x76, // starts with p
+	ScriptHashAddrID:        0x7a, 
 	WitnessPubKeyHashAddrID: 0x03, // starts with QW
 	WitnessScriptHashAddrID: 0x28, // starts with T7n
-	PrivateKeyID:            0xef, // starts with 9 (uncompressed) or c (compressed)
+	PrivateKeyID:            0x2e, // starts with 9 (uncompressed) or c (compressed)
 
 	// BIP32 hierarchical deterministic extended key magics
-	HDPrivateKeyID: [4]byte{0x04, 0x35, 0x83, 0x94}, // starts with tprv
-	HDPublicKeyID:  [4]byte{0x04, 0x35, 0x87, 0xcf}, // starts with tpub
+	HDPrivateKeyID: [4]byte{0x04, 0x88, 0x94, 0x78}, // starts with xpar
+	HDPublicKeyID:  [4]byte{0xe1, 0x42, 0x78, 0x00}, // starts with ppar
 
 	// BIP44 coin type used in the hierarchical deterministic path for
 	// address generation.

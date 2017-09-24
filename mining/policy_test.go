@@ -8,10 +8,10 @@ import (
 	"encoding/hex"
 	"testing"
 
-	"github.com/btcsuite/btcd/blockchain"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
+	"github.com/particl/partsuite_partd/blockchain"
+	"github.com/particl/partsuite_partd/chaincfg/chainhash"
+	"github.com/particl/partsuite_partd/wire"
+	partutil "github.com/particl/partsuite_partutil"
 )
 
 // newHashFromStr converts the passed big-endian hex string into a
@@ -49,7 +49,7 @@ func newUtxoViewpoint(sourceTxns []*wire.MsgTx, sourceTxHeights []int32) *blockc
 
 	view := blockchain.NewUtxoViewpoint()
 	for i, tx := range sourceTxns {
-		view.AddTxOuts(btcutil.NewTx(tx), sourceTxHeights[i])
+		view.AddTxOuts(partutil.NewTx(tx), sourceTxHeights[i])
 	}
 	return view
 }

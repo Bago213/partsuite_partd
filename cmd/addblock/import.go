@@ -11,12 +11,12 @@ import (
 	"sync"
 	"time"
 
-	"github.com/btcsuite/btcd/blockchain"
-	"github.com/btcsuite/btcd/blockchain/indexers"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/database"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
+	"github.com/particl/partsuite_partd/blockchain"
+	"github.com/particl/partsuite_partd/blockchain/indexers"
+	"github.com/particl/partsuite_partd/chaincfg/chainhash"
+	"github.com/particl/partsuite_partd/database"
+	"github.com/particl/partsuite_partd/wire"
+	partutil "github.com/particl/partsuite_partutil"
 )
 
 var zeroHash = chainhash.Hash{}
@@ -94,7 +94,7 @@ func (bi *blockImporter) readBlock() ([]byte, error) {
 // with any potential errors.
 func (bi *blockImporter) processBlock(serializedBlock []byte) (bool, error) {
 	// Deserialize the block which includes checks for malformed blocks.
-	block, err := btcutil.NewBlockFromBytes(serializedBlock)
+	block, err := partutil.NewBlockFromBytes(serializedBlock)
 	if err != nil {
 		return false, err
 	}

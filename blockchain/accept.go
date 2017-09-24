@@ -5,8 +5,8 @@
 package blockchain
 
 import (
-	"github.com/btcsuite/btcd/database"
-	"github.com/btcsuite/btcutil"
+	"github.com/particl/partsuite_partd/database"
+	partutil "github.com/particl/partsuite_partutil"
 )
 
 // maybeAcceptBlock potentially accepts a block into the block chain and, if
@@ -23,7 +23,7 @@ import (
 // their documentation for how the flags modify their behavior.
 //
 // This function MUST be called with the chain state lock held (for writes).
-func (b *BlockChain) maybeAcceptBlock(block *btcutil.Block, flags BehaviorFlags) (bool, error) {
+func (b *BlockChain) maybeAcceptBlock(block *partutil.Block, flags BehaviorFlags) (bool, error) {
 	dryRun := flags&BFDryRun == BFDryRun
 
 	// The height of this block is one more than the referenced previous

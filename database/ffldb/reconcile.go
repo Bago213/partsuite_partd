@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"hash/crc32"
 
-	"github.com/btcsuite/btcd/database"
+	"github.com/particl/partsuite_partd/database"
 )
 
 // The serialized write cursor location format is:

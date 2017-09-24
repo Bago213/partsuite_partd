@@ -10,10 +10,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
+	"github.com/particl/partsuite_partd/chaincfg"
+	"github.com/particl/partsuite_partd/chaincfg/chainhash"
+	"github.com/particl/partsuite_partd/wire"
+	partutil "github.com/particl/partsuite_partutil"
 )
 
 // TestSequenceLocksActive tests the SequenceLockActive function to ensure it
@@ -77,7 +77,7 @@ func TestCheckConnectBlock(t *testing.T) {
 
 	// The genesis block should fail to connect since it's already inserted.
 	genesisBlock := chaincfg.MainNetParams.GenesisBlock
-	err = chain.CheckConnectBlock(btcutil.NewBlock(genesisBlock))
+	err = chain.CheckConnectBlock(partutil.NewBlock(genesisBlock))
 	if err == nil {
 		t.Errorf("CheckConnectBlock: Did not received expected error")
 	}
@@ -87,7 +87,7 @@ func TestCheckConnectBlock(t *testing.T) {
 // as expected.
 func TestCheckBlockSanity(t *testing.T) {
 	powLimit := chaincfg.MainNetParams.PowLimit
-	block := btcutil.NewBlock(&Block100000)
+	block := partutil.NewBlock(&Block100000)
 	timeSource := NewMedianTime()
 	err := CheckBlockSanity(block, powLimit, timeSource)
 	if err != nil {
@@ -148,7 +148,7 @@ func TestCheckSerializedHeight(t *testing.T) {
 	for i, test := range tests {
 		msgTx := coinbaseTx.Copy()
 		msgTx.TxIn[0].SignatureScript = test.sigScript
-		tx := btcutil.NewTx(msgTx)
+		tx := partutil.NewTx(msgTx)
 
 		err := checkSerializedHeight(tx, test.wantHeight)
 		if reflect.TypeOf(err) != reflect.TypeOf(test.err) {

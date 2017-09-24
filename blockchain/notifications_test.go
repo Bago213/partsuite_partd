@@ -7,7 +7,7 @@ package blockchain
 import (
 	"testing"
 
-	"github.com/btcsuite/btcd/chaincfg"
+	"github.com/particl/partsuite_partd/chaincfg"
 )
 
 // TestNotifications ensures that notification callbacks are fired on events.

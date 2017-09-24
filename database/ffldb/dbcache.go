@@ -10,7 +10,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/btcsuite/btcd/database/internal/treap"
+	"github.com/particl/partsuite_partd/database/internal/treap"
 	"github.com/btcsuite/goleveldb/leveldb"
 	"github.com/btcsuite/goleveldb/leveldb/iterator"
 	"github.com/btcsuite/goleveldb/leveldb/util"

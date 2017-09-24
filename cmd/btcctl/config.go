@@ -13,8 +13,8 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/btcsuite/btcd/btcjson"
-	"github.com/btcsuite/btcutil"
+	"github.com/particl/partsuite_partd/btcjson"
+	partutil "github.com/particl/partsuite_partutil"
 	flags "github.com/jessevdk/go-flags"
 )
 
@@ -26,9 +26,9 @@ const (
 )
 
 var (
-	btcdHomeDir           = btcutil.AppDataDir("btcd", false)
-	btcctlHomeDir         = btcutil.AppDataDir("btcctl", false)
-	btcwalletHomeDir      = btcutil.AppDataDir("btcwallet", false)
+	btcdHomeDir           = partutil.AppDataDir("btcd", false)
+	btcctlHomeDir         = partutil.AppDataDir("btcctl", false)
+	btcwalletHomeDir      = partutil.AppDataDir("btcwallet", false)
 	defaultConfigFile     = filepath.Join(btcctlHomeDir, "btcctl.conf")
 	defaultRPCServer      = "localhost"
 	defaultRPCCertFile    = filepath.Join(btcdHomeDir, "rpc.cert")
@@ -118,7 +118,7 @@ func normalizeAddress(addr string, useTestNet3, useSimNet, useWallet bool) strin
 		switch {
 		case useTestNet3:
 			if useWallet {
-				defaultPort = "18332"
+				defaultPort = "51938"
 			} else {
 				defaultPort = "18334"
 			}
@@ -130,7 +130,7 @@ func normalizeAddress(addr string, useTestNet3, useSimNet, useWallet bool) strin
 			}
 		default:
 			if useWallet {
-				defaultPort = "8332"
+				defaultPort = "51738"
 			} else {
 				defaultPort = "8334"
 			}

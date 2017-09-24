@@ -10,8 +10,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/wire"
+	"github.com/particl/partsuite_partd/chaincfg/chainhash"
+	"github.com/particl/partsuite_partd/wire"
 )
 
 // Bip16Activation is the timestamp where BIP0016 is valid to use in the
@@ -484,7 +484,7 @@ func calcWitnessSignatureHash(subScript []parsedOpcode, sigHashes *TxSigHashes,
 	var bIndex [4]byte
 	binary.LittleEndian.PutUint32(bIndex[:], txIn.PreviousOutPoint.Index)
 	sigHash.Write(bIndex[:])
-
+/*
 	if isWitnessPubKeyHash(subScript) {
 		// The script code for a p2wkh is a length prefix varint for
 		// the next 25 bytes, followed by a re-creation of the original
@@ -503,6 +503,9 @@ func calcWitnessSignatureHash(subScript []parsedOpcode, sigHashes *TxSigHashes,
 		rawScript, _ := unparseScript(subScript)
 		wire.WriteVarBytes(&sigHash, 0, rawScript)
 	}
+*/
+	rawScript, _ := unparseScript(subScript)
+	wire.WriteVarBytes(&sigHash, 0, rawScript)
 
 	// Next, add the input amount, and sequence number of the input being
 	// signed.

@@ -13,15 +13,15 @@ import (
 	"testing"
 	"time"
 
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
+	"github.com/particl/partsuite_partd/chaincfg"
+	"github.com/particl/partsuite_partd/chaincfg/chainhash"
+	"github.com/particl/partsuite_partd/txscript"
+	"github.com/particl/partsuite_partd/wire"
+	partutil "github.com/particl/partsuite_partutil"
 )
 
 func testSendOutputs(r *Harness, t *testing.T) {
-	genSpend := func(amt btcutil.Amount) *chainhash.Hash {
+	genSpend := func(amt partutil.Amount) *chainhash.Hash {
 		// Grab a fresh address from the wallet.
 		addr, err := r.NewAddress()
 		if err != nil {
@@ -63,7 +63,7 @@ func testSendOutputs(r *Harness, t *testing.T) {
 
 	// First, generate a small spend which will require only a single
 	// input.
-	txid := genSpend(btcutil.Amount(5 * btcutil.SatoshiPerBitcoin))
+	txid := genSpend(partutil.Amount(5 * partutil.SatoshiPerBitcoin))
 
 	// Generate a single block, the transaction the wallet created should
 	// be found in this block.
@@ -75,7 +75,7 @@ func testSendOutputs(r *Harness, t *testing.T) {
 
 	// Next, generate a spend much greater than the block reward. This
 	// transaction should also have been mined properly.
-	txid = genSpend(btcutil.Amount(500 * btcutil.SatoshiPerBitcoin))
+	txid = genSpend(partutil.Amount(500 * partutil.SatoshiPerBitcoin))
 	blockHashes, err = r.Node.Generate(1)
 	if err != nil {
 		t.Fatalf("unable to generate single block: %v", err)
@@ -335,17 +335,17 @@ func testGenerateAndSubmitBlock(r *Harness, t *testing.T) {
 	if err != nil {
 		t.Fatalf("unable to create script: %v", err)
 	}
-	output := wire.NewTxOut(btcutil.SatoshiPerBitcoin, pkScript)
+	output := wire.NewTxOut(partutil.SatoshiPerBitcoin, pkScript)
 
 	const numTxns = 5
-	txns := make([]*btcutil.Tx, 0, numTxns)
+	txns := make([]*partutil.Tx, 0, numTxns)
 	for i := 0; i < numTxns; i++ {
 		tx, err := r.CreateTransaction([]*wire.TxOut{output}, 10)
 		if err != nil {
 			t.Fatalf("unable to create tx: %v", err)
 		}
 
-		txns = append(txns, btcutil.NewTx(tx))
+		txns = append(txns, partutil.NewTx(tx))
 	}
 
 	// Now generate a block with the default block version, and a zero'd
@@ -404,7 +404,7 @@ func testMemWalletReorg(r *Harness, t *testing.T) {
 	defer harness.TearDown()
 
 	// The internal wallet of this harness should now have 250 BTC.
-	expectedBalance := btcutil.Amount(250 * btcutil.SatoshiPerBitcoin)
+	expectedBalance := partutil.Amount(250 * partutil.SatoshiPerBitcoin)
 	walletBalance := harness.ConfirmedBalance()
 	if expectedBalance != walletBalance {
 		t.Fatalf("wallet balance incorrect: expected %v, got %v",
@@ -424,7 +424,7 @@ func testMemWalletReorg(r *Harness, t *testing.T) {
 	// The original wallet should now have a balance of 0 BTC as its entire
 	// chain should have been decimated in favor of the main harness'
 	// chain.
-	expectedBalance = btcutil.Amount(0)
+	expectedBalance = partutil.Amount(0)
 	walletBalance = harness.ConfirmedBalance()
 	if expectedBalance != walletBalance {
 		t.Fatalf("wallet balance incorrect: expected %v, got %v",
@@ -445,7 +445,7 @@ func testMemWalletLockedOutputs(r *Harness, t *testing.T) {
 	if err != nil {
 		t.Fatalf("unable to create script: %v", err)
 	}
-	outputAmt := btcutil.Amount(50 * btcutil.SatoshiPerBitcoin)
+	outputAmt := partutil.Amount(50 * partutil.SatoshiPerBitcoin)
 	output := wire.NewTxOut(int64(outputAmt), pkScript)
 	tx, err := r.CreateTransaction([]*wire.TxOut{output}, 10)
 	if err != nil {
@@ -527,7 +527,7 @@ func TestMain(m *testing.M) {
 func TestHarness(t *testing.T) {
 	// We should have (numMatureOutputs * 50 BTC) of mature unspendable
 	// outputs.
-	expectedBalance := btcutil.Amount(numMatureOutputs * 50 * btcutil.SatoshiPerBitcoin)
+	expectedBalance := partutil.Amount(numMatureOutputs * 50 * partutil.SatoshiPerBitcoin)
 	harnessBalance := mainHarness.ConfirmedBalance()
 	if harnessBalance != expectedBalance {
 		t.Fatalf("expected wallet balance of %v instead have %v",

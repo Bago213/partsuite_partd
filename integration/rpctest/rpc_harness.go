@@ -15,11 +15,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/rpcclient"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
+	"github.com/particl/partsuite_partd/chaincfg"
+	"github.com/particl/partsuite_partd/chaincfg/chainhash"
+	"github.com/particl/partsuite_partd/rpcclient"
+	"github.com/particl/partsuite_partd/wire"
+	partutil "github.com/particl/partsuite_partutil"
 )
 
 const (
@@ -166,7 +166,7 @@ func New(activeNet *chaincfg.Params, handlers *rpcclient.NotificationHandlers,
 	// callback.
 	if handlers.OnFilteredBlockConnected != nil {
 		obc := handlers.OnFilteredBlockConnected
-		handlers.OnFilteredBlockConnected = func(height int32, header *wire.BlockHeader, filteredTxns []*btcutil.Tx) {
+		handlers.OnFilteredBlockConnected = func(height int32, header *wire.BlockHeader, filteredTxns []*partutil.Tx) {
 			wallet.IngestBlock(height, header, filteredTxns)
 			obc(height, header, filteredTxns)
 		}
@@ -222,7 +222,7 @@ func (h *Harness) SetUp(createTestChain bool, numMatureOutputs uint32) error {
 
 	// Filter transactions that pay to the coinbase associated with the
 	// wallet.
-	filterAddrs := []btcutil.Address{h.wallet.coinbaseAddr}
+	filterAddrs := []partutil.Address{h.wallet.coinbaseAddr}
 	if err := h.Node.LoadTxFilter(true, filterAddrs, nil); err != nil {
 		return err
 	}
@@ -328,7 +328,7 @@ func (h *Harness) connectRPCClient() error {
 // wallet.
 //
 // This function is safe for concurrent access.
-func (h *Harness) NewAddress() (btcutil.Address, error) {
+func (h *Harness) NewAddress() (partutil.Address, error) {
 	return h.wallet.NewAddress()
 }
 
@@ -336,7 +336,7 @@ func (h *Harness) NewAddress() (btcutil.Address, error) {
 // wallet.
 //
 // This function is safe for concurrent access.
-func (h *Harness) ConfirmedBalance() btcutil.Amount {
+func (h *Harness) ConfirmedBalance() partutil.Amount {
 	return h.wallet.ConfirmedBalance()
 }
 
@@ -346,7 +346,7 @@ func (h *Harness) ConfirmedBalance() btcutil.Amount {
 //
 // This function is safe for concurrent access.
 func (h *Harness) SendOutputs(targetOutputs []*wire.TxOut,
-	feeRate btcutil.Amount) (*chainhash.Hash, error) {
+	feeRate partutil.Amount) (*chainhash.Hash, error) {
 
 	return h.wallet.SendOutputs(targetOutputs, feeRate)
 }
@@ -362,7 +362,7 @@ func (h *Harness) SendOutputs(targetOutputs []*wire.TxOut,
 //
 // This function is safe for concurrent access.
 func (h *Harness) CreateTransaction(targetOutputs []*wire.TxOut,
-	feeRate btcutil.Amount) (*wire.MsgTx, error) {
+	feeRate partutil.Amount) (*wire.MsgTx, error) {
 
 	return h.wallet.CreateTransaction(targetOutputs, feeRate)
 }
@@ -399,8 +399,8 @@ func (h *Harness) P2PAddress() string {
 // blockTime parameter if one doesn't wish to set a custom time.
 //
 // This function is safe for concurrent access.
-func (h *Harness) GenerateAndSubmitBlock(txns []*btcutil.Tx, blockVersion int32,
-	blockTime time.Time) (*btcutil.Block, error) {
+func (h *Harness) GenerateAndSubmitBlock(txns []*partutil.Tx, blockVersion int32,
+	blockTime time.Time) (*partutil.Block, error) {
 
 	h.Lock()
 	defer h.Unlock()
@@ -417,7 +417,7 @@ func (h *Harness) GenerateAndSubmitBlock(txns []*btcutil.Tx, blockVersion int32,
 	if err != nil {
 		return nil, err
 	}
-	prevBlock := btcutil.NewBlock(mBlock)
+	prevBlock := partutil.NewBlock(mBlock)
 	prevBlock.SetHeight(prevBlockHeight)
 
 	// Create a new block including the specified transactions
