@@ -899,6 +899,19 @@ func NewEngine(scriptPubKey []byte, tx *wire.MsgTx, txIdx int, flags ScriptFlags
 
 		var witProgram []byte
 
+
+		// The scriptSig must be *empty* for all native witness
+		// programs, otherwise we introduce malleability.
+		if len(scriptSig) != 0 {
+			errStr := "native witness program cannot " +
+				"also have a signature script"
+			return nil, scriptError(ErrWitnessMalleated, errStr)
+		}
+
+		witProgram = scriptPubKey
+
+
+		/*
 		switch {
 		case isWitnessProgram(vm.scripts[1]):
 			// The scriptSig must be *empty* for all native witness
@@ -925,6 +938,7 @@ func NewEngine(scriptPubKey []byte, tx *wire.MsgTx, txIdx int, flags ScriptFlags
 				return nil, scriptError(ErrWitnessMalleatedP2SH, errStr)
 			}
 		}
+		
 
 		if witProgram != nil {
 			var err error
@@ -942,7 +956,9 @@ func NewEngine(scriptPubKey []byte, tx *wire.MsgTx, txIdx int, flags ScriptFlags
 				return nil, scriptError(ErrWitnessUnexpected, errStr)
 			}
 		}
-
+		*/
+		
+		vm.witnessProgram = witProgram
 	}
 
 	vm.tx = *tx

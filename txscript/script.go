@@ -148,6 +148,7 @@ func ExtractWitnessProgramInfo(script []byte) (int, []byte, error) {
 		return 0, nil, err
 	}
 
+/*
 	// If at this point, the scripts doesn't resemble a witness program,
 	// then we'll exit early as there isn't a valid version or program to
 	// extract.
@@ -158,7 +159,9 @@ func ExtractWitnessProgramInfo(script []byte) (int, []byte, error) {
 
 	witnessVersion := asSmallInt(pops[0].opcode)
 	witnessProgram := pops[1].data
-
+*/
+	witnessVersion := 1
+	witnessProgram := pops[0].data
 	return witnessVersion, witnessProgram, nil
 }
 

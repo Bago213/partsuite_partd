@@ -267,9 +267,9 @@ type TxOut struct {
 // SerializeSize returns the number of bytes it would take to serialize the
 // the transaction output.
 func (t *TxOut) SerializeSize() int {
-	// Value 8 bytes + serialized varint size for the length of PkScript +
+	// version 1 byte + Value 8 bytes + serialized varint size for the length of PkScript +
 	// PkScript bytes.
-	return 8 + VarIntSerializeSize(uint64(len(t.PkScript))) + len(t.PkScript)
+	return 1 + 8 + VarIntSerializeSize(uint64(len(t.PkScript))) + len(t.PkScript)
 }
 
 // NewTxOut returns a new bitcoin transaction output with the provided
@@ -410,7 +410,7 @@ func (msg *MsgTx) Copy() *MsgTx {
 // See Deserialize for decoding transactions stored to disk, such as in a
 // database, as opposed to decoding transactions from the wire.
 func (msg *MsgTx) BtcDecode(r io.Reader, pver uint32, enc MessageEncoding) error {
-	
+
 	version, err := binarySerializer.Uint8(r)
 	if err != nil {
 		return err
@@ -421,12 +421,12 @@ func (msg *MsgTx) BtcDecode(r io.Reader, pver uint32, enc MessageEncoding) error
 		return err
 	}
 	msg.Version |= int32(version)<<8
-	
+
 	msg.LockTime, err = binarySerializer.Uint32(r, littleEndian)
 	if err != nil {
 		return err
 	}
-	
+
 	count, err := ReadVarInt(r, pver)
 	if err != nil {
 		return err
@@ -1059,9 +1059,9 @@ func (msg *MsgTx) SerializeNoWitness(w io.Writer) error {
 // baseSize returns the serialized size of the transaction without accounting
 // for any witness data.
 func (msg *MsgTx) baseSize() int {
-	// Version 4 bytes + LockTime 4 bytes + Serialized varint size for the
-	// number of transaction inputs and outputs.
-	n := 8 + VarIntSerializeSize(uint64(len(msg.TxIn))) +
+	// Version 2 bytes + LockTime 4 bytes + Serialized varint size for the
+	// number of transaction inputs, outputs and witness stacks.
+	n := 6 + VarIntSerializeSize(uint64(len(msg.TxIn))) +
 		VarIntSerializeSize(uint64(len(msg.TxOut)))
 
 	for _, txIn := range msg.TxIn {
@@ -1081,9 +1081,6 @@ func (msg *MsgTx) SerializeSize() int {
 	n := msg.baseSize()
 
 	if msg.HasWitness() {
-		// The marker, and flag fields take up two additional bytes.
-		n += 2
-
 		// Additionally, factor in the serialized size of each of the
 		// witnesses for each txin.
 		for _, txin := range msg.TxIn {
@@ -1262,7 +1259,7 @@ func readTxOut(r io.Reader, pver uint32, version int32, to *TxOut) error {
 	if err != nil {
 		return err
 	}
-	
+
 	if outputType != 1 {
 		return errors.New("Invalid outputType")
 	}
